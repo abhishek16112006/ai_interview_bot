@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="hero-section text-center py-5">
+    <h1 class="display-4 mb-4 fade-in">Welcome to Interview Practice Hub</h1>
+    <p class="lead mb-4 fade-in-delay">Master your interview skills with AI-powered feedback and company-specific practice</p>
+    <div class="fade-in-delay-2">
+        <a href="{{ url_for('signup') }}" class="btn btn-primary btn-lg me-3">Get Started</a>
+        <a href="{{ url_for('login') }}" class="btn btn-outline-primary btn-lg">Login</a>
+    </div>
+</div>
+
+<div class="features-section mt-5">
+    <div class="row">
+        <div class="col-md-4 mb-4 feature-card">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-building fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">Company-Specific Questions</h5>
+                    <p class="card-text">Practice with real questions from Deloitte, Google, Microsoft, TCS, and more</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4 feature-card">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-robot fa-3x text-success mb-3"></i>
+                    <h5 class="card-title">AI-Powered Feedback</h5>
+                    <p class="card-text">Get instant analysis, scoring, and improvement suggestions</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4 feature-card">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-microphone fa-3x text-danger mb-3"></i>
+                    <h5 class="card-title">Voice Practice</h5>
+                    <p class="card-text">Answer questions using speech-to-text and hear questions read aloud</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-md-4 mb-4 feature-card">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-file-pdf fa-3x text-warning mb-3"></i>
+                    <h5 class="card-title">Professional Resume</h5>
+                    <p class="card-text">Create and download professional resumes in PDF format</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4 feature-card">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-chart-line fa-3x text-info mb-3"></i>
+                    <h5 class="card-title">Track Progress</h5>
+                    <p class="card-text">Monitor your improvement with detailed analytics and history</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4 feature-card">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-comments fa-3x text-secondary mb-3"></i>
+                    <h5 class="card-title">Introduction Practice</h5>
+                    <p class="card-text">Perfect your professional introduction with AI guidance</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Function to speak the welcome message
+        function speakWelcome() {
+            if ('speechSynthesis' in window) {
+                // Cancel any ongoing speech
+                window.speechSynthesis.cancel();
+                
+                const text = "Welcome to AI interview bot";
+                
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.rate = 1.0;
+                utterance.pitch = 1.0;
+                utterance.volume = 1.0;
+                
+                // Try to speak
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        // Attempt to speak immediately
+        speakWelcome();
+
+        // One-time click handler for browsers blocking autoplay
+        document.body.addEventListener('click', function() {
+            if (!window.speechSynthesis.speaking) {
+                speakWelcome();
+            }
+        }, { once: true });
+    });
+</script>
+{% endblock %}

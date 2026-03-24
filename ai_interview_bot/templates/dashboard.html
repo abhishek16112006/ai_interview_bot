@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Interview Practice Hub{% endblock %}
+
+{% block content %}
+<div class="dashboard-header mb-4">
+    <h2 class="fade-in">Welcome, {{ user.username }}!</h2>
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card stats-card fade-in">
+                <div class="card-body text-center">
+                    <i class="fas fa-question-circle fa-2x text-primary mb-2"></i>
+                    <h4>{{ total_answers }}</h4>
+                    <p class="text-muted">Questions Answered</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card stats-card fade-in-delay">
+                <div class="card-body text-center">
+                    <i class="fas fa-star fa-2x text-warning mb-2"></i>
+                    <h4>{{ avg_score }}</h4>
+                    <p class="text-muted">Average Score</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card stats-card fade-in-delay-2">
+                <div class="card-body text-center">
+                    <i class="fas fa-chart-line fa-2x text-success mb-2"></i>
+                    <h4>{{ companies|length }}</h4>
+                    <p class="text-muted">Companies Available</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="company-selection mt-5">
+    <h3 class="mb-4">Select a Company to Practice</h3>
+    <div class="row">
+        {% for company in companies %}
+        <div class="col-md-4 mb-4 company-card">
+            <div class="card h-100 shadow-sm hover-lift">
+                <div class="card-body text-center">
+                    <i class="fas fa-building fa-3x mb-3 company-icon"></i>
+                    <h5 class="card-title">{{ company.name }}</h5>
+                    <p class="text-muted">{{ company.questions|length }} Questions</p>
+                    <a href="{{ url_for('interview', company_id=company.id) }}" class="btn btn-primary">
+                        Start Practice <i class="fas fa-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="quick-links mt-5">
+    <h3 class="mb-4">Quick Actions</h3>
+    <div class="row">
+        <div class="col-md-3 mb-3">
+            <a href="{{ url_for('resume') }}" class="quick-link-card">
+                <div class="card shadow-sm hover-lift">
+                    <div class="card-body text-center">
+                        <i class="fas fa-file-alt fa-2x text-primary mb-2"></i>
+                        <p class="mb-0">Build Resume</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-3 mb-3">
+            <a href="{{ url_for('introduction') }}" class="quick-link-card">
+                <div class="card shadow-sm hover-lift">
+                    <div class="card-body text-center">
+                        <i class="fas fa-user-tie fa-2x text-success mb-2"></i>
+                        <p class="mb-0">Practice Intro</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-3 mb-3">
+            <a href="{{ url_for('history') }}" class="quick-link-card">
+                <div class="card shadow-sm hover-lift">
+                    <div class="card-body text-center">
+                        <i class="fas fa-history fa-2x text-info mb-2"></i>
+                        <p class="mb-0">View History</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-3 mb-3">
+            <a href="{{ url_for('logout') }}" class="quick-link-card">
+                <div class="card shadow-sm hover-lift">
+                    <div class="card-body text-center">
+                        <i class="fas fa-sign-out-alt fa-2x text-danger mb-2"></i>
+                        <p class="mb-0">Logout</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

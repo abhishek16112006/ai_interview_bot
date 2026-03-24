@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block title %}Resume Builder{% endblock %}
+
+{% block content %}
+<div class="resume-builder">
+    <h2 class="mb-4 fade-in"><i class="fas fa-file-alt me-2"></i>Professional Resume Builder</h2>
+
+    <div class="card shadow-lg fade-in-delay">
+        <div class="card-body p-4">
+            <form id="resumeForm">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="fullName" class="form-label">Full Name *</label>
+                        <input type="text" class="form-control" id="fullName" value="{% if resume %}{{ resume.full_name }}{% endif %}" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="email" class="form-label">Email *</label>
+                        <input type="email" class="form-control" id="email" value="{% if resume %}{{ resume.email }}{% endif %}" required>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="phone" class="form-label">Phone</label>
+                        <input type="tel" class="form-control" id="phone" value="{% if resume %}{{ resume.phone }}{% endif %}">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="location" class="form-label">Location</label>
+                        <input type="text" class="form-control" id="location" value="{% if resume %}{{ resume.location }}{% endif %}">
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="summary" class="form-label">Professional Summary</label>
+                    <textarea class="form-control" id="summary" rows="3" placeholder="Brief summary of your professional background">{% if resume %}{{ resume.summary }}{% endif %}</textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label for="experience" class="form-label">Work Experience</label>
+                    <textarea class="form-control" id="experience" rows="4" placeholder="List your work experience (use line breaks for multiple positions)">{% if resume %}{{ resume.experience }}{% endif %}</textarea>
+                    <small class="text-muted">Format: Job Title - Company (Year-Year)<br>Key responsibilities and achievements</small>
+                </div>
+
+                <div class="mb-3">
+                    <label for="education" class="form-label">Education</label>
+                    <textarea class="form-control" id="education" rows="3" placeholder="Your educational background">{% if resume %}{{ resume.education }}{% endif %}</textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label for="skills" class="form-label">Skills</label>
+                    <textarea class="form-control" id="skills" rows="2" placeholder="List your technical and soft skills">{% if resume %}{{ resume.skills }}{% endif %}</textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label for="projects" class="form-label">Projects</label>
+                    <textarea class="form-control" id="projects" rows="3" placeholder="Notable projects you've worked on">{% if resume %}{{ resume.projects }}{% endif %}</textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label for="certifications" class="form-label">Certifications</label>
+                    <textarea class="form-control" id="certifications" rows="2" placeholder="Professional certifications">{% if resume %}{{ resume.certifications }}{% endif %}</textarea>
+                </div>
+
+                <div class="alert alert-success d-none" id="successMsg"></div>
+                <div class="alert alert-danger d-none" id="errorMsg"></div>
+
+                <div class="btn-group w-100">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-1"></i> Save Resume
+                    </button>
+                    {% if resume %}
+                    <a href="{{ url_for('download_resume', resume_id=resume.id) }}" class="btn btn-success">
+                        <i class="fas fa-download me-1"></i> Download PDF
+                    </a>
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('resumeForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const formData = {
+        full_name: document.getElementById('fullName').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        location: document.getElementById('location').value,
+        summary: document.getElementById('summary').value,
+        experience: document.getElementById('experience').value,
+        education: document.getElementById('education').value,
+        skills: document.getElementById('skills').value,
+        projects: document.getElementById('projects').value,
+        certifications: document.getElementById('certifications').value
+    };
+    
+    try {
+        const response = await fetch('/resume', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(formData)
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            document.getElementById('successMsg').textContent = 'Resume saved successfully!';
+            document.getElementById('successMsg').classList.remove('d-none');
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
+        }
+    } catch (error) {
+        document.getElementById('errorMsg').textContent = 'Error saving resume';
+        document.getElementById('errorMsg').classList.remove('d-none');
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Introduction Practice{% endblock %}
+
+{% block content %}
+<div class="introduction-practice">
+    <h2 class="mb-4 fade-in"><i class="fas fa-user-tie me-2"></i>Professional Introduction Practice</h2>
+
+    <div class="card shadow-lg mb-4 fade-in-delay">
+        <div class="card-body p-4">
+            <h4 class="mb-3">Practice Your Introduction</h4>
+            <p class="text-muted">A strong professional introduction is key to making a great first impression. Practice here and get AI-powered feedback!</p>
+
+            <div class="professional-template mb-4 p-3 bg-light rounded">
+                <h5><i class="fas fa-lightbulb me-2 text-warning"></i>Professional Introduction Template:</h5>
+                <p class="mb-2">"Hello, my name is [Your Name]. I am a [Your Role/Title] with [X years] of experience in [Your Field/Industry].</p>
+                <p class="mb-2">I specialize in [Key Skills/Areas], and I have successfully [Major Achievement/Project].</p>
+                <p class="mb-0">I'm passionate about [Your Interest], and I'm excited about the opportunity to [Goal/Aspiration]."</p>
+            </div>
+
+            <div class="mb-3">
+                <label for="introText" class="form-label">Your Introduction:</label>
+                <textarea class="form-control" id="introText" rows="6" placeholder="Type or speak your professional introduction here..."></textarea>
+            </div>
+
+            <div class="btn-group mb-3" role="group">
+                <button class="btn btn-danger" id="micBtnIntro">
+                    <i class="fas fa-microphone me-1"></i> Speak Introduction
+                </button>
+                <button class="btn btn-success" id="stopMicBtnIntro" disabled>
+                    <i class="fas fa-stop me-1"></i> Stop
+                </button>
+                <button class="btn btn-info" id="readTemplateBtn">
+                    <i class="fas fa-volume-up me-1"></i> Hear Template
+                </button>
+            </div>
+
+            <button class="btn btn-primary w-100" id="analyzeIntroBtn">
+                <i class="fas fa-brain me-1"></i> Analyze Introduction
+            </button>
+
+            <div class="feedback-section mt-4 d-none" id="introFeedbackSection">
+                <h4 class="mb-3">AI Feedback:</h4>
+                <div class="score-display mb-3">
+                    <h2 class="text-center">Score: <span id="introScoreValue" class="text-primary">0</span>/100</h2>
+                    <div class="progress">
+                        <div class="progress-bar" id="introScoreBar" role="progressbar" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="alert alert-info" id="introFeedbackText"></div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card border-success mb-3">
+                            <div class="card-header bg-success text-white">
+                                <i class="fas fa-check-circle me-1"></i> Strengths
+                            </div>
+                            <div class="card-body">
+                                <ul id="introStrengthsList"></ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card border-warning mb-3">
+                            <div class="card-header bg-warning text-dark">
+                                <i class="fas fa-exclamation-triangle me-1"></i> Improvements
+                            </div>
+                            <div class="card-body">
+                                <ul id="introImprovementsList"></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card border-primary" id="professionalExampleCard">
+                    <div class="card-header bg-primary text-white">
+                        <i class="fas fa-star me-1"></i> Professional Example
+                    </div>
+                    <div class="card-body">
+                        <p id="professionalExample"></p>
+                        <button class="btn btn-info btn-sm" id="readExampleBtn">
+                            <i class="fas fa-volume-up me-1"></i> Hear Example
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/introduction.js') }}"></script>
+{% endblock %}

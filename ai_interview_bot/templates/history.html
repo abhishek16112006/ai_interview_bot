@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}Answer History{% endblock %}
+
+{% block content %}
+<div class="history-section">
+    <h2 class="mb-4 fade-in"><i class="fas fa-history me-2"></i>Answer History & Performance</h2>
+
+    {% if answers %}
+    <div class="table-responsive fade-in-delay">
+        <table class="table table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Date</th>
+                    <th>Company</th>
+                    <th>Question</th>
+                    <th>Score</th>
+                    <th>Sentiment</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for answer in answers %}
+                <tr>
+                    <td>{{ answer.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                    <td><span class="badge bg-primary">{{ answer.question.company.name }}</span></td>
+                    <td>{{ answer.question.question_text[:50] }}...</td>
+                    <td>
+                        <span class="badge {% if answer.score >= 80 %}bg-success{% elif answer.score >= 60 %}bg-warning{% else %}bg-danger{% endif %}">
+                            {{ answer.score }}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="badge {% if answer.sentiment == 'positive' %}bg-success{% elif answer.sentiment == 'negative' %}bg-danger{% else %}bg-secondary{% endif %}">
+                            {{ answer.sentiment }}
+                        </span>
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-info view-details" 
+                                data-answer="{{ answer.answer_text }}"
+                                data-feedback="{{ answer.feedback }}"
+                                data-score="{{ answer.score }}">
+                            View Details
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        <i class="fas fa-info-circle me-2"></i>No answers recorded yet. Start practicing to see your history here!
+    </div>
+    {% endif %}
+</div>
+
+<div class="modal fade" id="detailsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Answer Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <h6>Your Answer:</h6>
+                <p id="modalAnswer" class="p-3 bg-light rounded"></p>
+                <h6>Score: <span id="modalScore" class="text-primary"></span>/100</h6>
+                <h6>Feedback:</h6>
+                <p id="modalFeedback" class="alert alert-info"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.querySelectorAll('.view-details').forEach(btn => {
+    btn.addEventListener('click', function() {
+        document.getElementById('modalAnswer').textContent = this.dataset.answer;
+        document.getElementById('modalScore').textContent = this.dataset.score;
+        document.getElementById('modalFeedback').textContent = this.dataset.feedback;
+        new bootstrap.Modal(document.getElementById('detailsModal')).show();
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Login - Interview Practice Hub{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <div class="card shadow fade-in">
+            <div class="card-body p-5">
+                <h2 class="card-title text-center mb-4">Login</h2>
+                <form id="loginForm">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" required>
+                    </div>
+                    <div class="alert alert-danger d-none" id="errorMsg"></div>
+                    <button type="submit" class="btn btn-primary w-100">Login</button>
+                </form>
+                <p class="text-center mt-3">
+                    Don't have an account? <a href="{{ url_for('signup') }}">Sign Up</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    
+    try {
+        const response = await fetch('/login', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({username, password})
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            window.location.href = '/dashboard';
+        } else {
+            document.getElementById('errorMsg').textContent = data.message;
+            document.getElementById('errorMsg').classList.remove('d-none');
+        }
+    } catch (error) {
+        document.getElementById('errorMsg').textContent = 'An error occurred';
+        document.getElementById('errorMsg').classList.remove('d-none');
+    }
+});
+</script>
+{% endblock %}
